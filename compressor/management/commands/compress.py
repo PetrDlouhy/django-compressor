@@ -331,10 +331,12 @@ class Command(BaseCommand):
                 try:
                     result = parser.render_node(template, context, node)
                 except Exception as e:
+                    # Get the stack trace
+                    stack_trace = traceback.format_exc()
+
                     errors.append(
                         CommandError(
-                            "An error occurred during rendering %s: "
-                            "%s" % (template.template_name, smart_str(e))
+                             f"An error occurred during rendering {template.template_name}: {smart_str(e)}\n{stack_trace}"
                         )
                     )
                     del offline_manifest[key]
