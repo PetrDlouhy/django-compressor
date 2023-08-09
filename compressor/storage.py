@@ -175,7 +175,10 @@ class DefaultOfflineManifestStorage(LazyObject):
             except InvalidStorageError:
                 pass
 
-        self._wrapped = get_storage_class(settings.COMPRESS_OFFLINE_MANIFEST_STORAGE)()
+        if get_storage_class and hasattr(settings, 'COMPRESS_OFFLINE_MANIFEST_STORAGE'):
+            self._wrapped = get_storage_class(settings.COMPRESS_OFFLINE_MANIFEST_STORAGE)()
+        else:
+            self._wrapped = django_default_storage
 
 
 default_offline_manifest_storage = DefaultOfflineManifestStorage()
